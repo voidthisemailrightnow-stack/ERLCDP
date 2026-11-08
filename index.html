@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101722">
+  <title>ERLC Dispatch Radio</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">RX</div>
+        <div>
+          <div class="brand-title">METRO <span>DISPATCH</span></div>
+          <div class="brand-subtitle">ERLC RADIO COMMUNICATIONS</div>
+        </div>
+      </div>
+      <div class="top-status">
+        <span class="status-dot" id="connectionDot"></span>
+        <span id="connectionText">NOT CONNECTED</span>
+        <span class="clock" id="clock">--:--:--</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="join-screen panel" id="joinScreen">
+        <div class="eyebrow">SECURE COMMUNICATIONS NETWORK</div>
+        <h1>Join the radio network</h1>
+        <p class="muted">Enter your dispatcher name and the private room code supplied by your server owner.</p>
+        <form id="joinForm" class="join-form">
+          <label>Dispatcher name<input id="nameInput" maxlength="24" placeholder="Example: Unit 204" required></label>
+          <label>Private radio room code<input id="codeInput" type="password" placeholder="Enter room code" required></label>
+          <button class="primary-button" type="submit" id="joinButton">CONNECT TO RADIO <span>→</span></button>
+          <div class="form-error" id="joinError" role="alert"></div>
+        </form>
+        <div class="security-note">🔒 Your radio room is private to people with the room code.</div>
+      </section>
+
+      <div id="radioApp" class="hidden">
+        <section class="stats-grid">
+          <div class="stat-card"><span class="stat-label">NETWORK</span><strong><i class="status-dot" id="networkDot"></i> <span id="networkStatus">ONLINE</span></strong></div>
+          <div class="stat-card"><span class="stat-label">DISPATCHERS ONLINE</span><strong id="onlineCount">1</strong></div>
+          <div class="stat-card"><span class="stat-label">ACTIVE FREQUENCY</span><strong id="activeFrequency">POLICE 1</strong></div>
+          <div class="stat-card"><span class="stat-label">MUTED FREQUENCIES</span><strong id="mutedCount">0</strong></div>
+        </section>
+
+        <div class="main-grid">
+          <section class="panel frequencies-panel">
+            <div class="section-heading">
+              <div><div class="eyebrow">COMMUNICATIONS</div><h2>Radio frequencies</h2></div>
+              <span class="subtle">SELECT TO TRANSMIT</span>
+            </div>
+            <div class="channel-grid" id="channelGrid"></div>
+            <div class="legend"><span><i class="legend-dot selected"></i> Selected to transmit</span><span><i class="legend-dot muted-legend"></i> Muted incoming audio</span></div>
+          </section>
+
+          <aside class="side-column">
+            <section class="panel transmit-panel">
+              <div class="section-heading">
+                <div><div class="eyebrow">VOICE CONTROL</div><h2>Push to talk</h2></div>
+                <span class="tx-badge" id="txBadge">STANDBY</span>
+              </div>
+              <div class="ptt-wrap">
+                <button class="ptt-button" id="pttButton" type="button" aria-label="Hold to transmit"><span id="pttIcon">⚡</span></button>
+                <strong id="pttTitle">READY TO TRANSMIT</strong>
+                <small id="pttHelp">Hold the button to speak</small>
+              </div>
+              <div class="selected-frequency"><span>TRANSMITTING ON</span><strong id="txFrequency">POLICE 1</strong></div>
+              <div class="mic-row"><span id="micStatus">MICROPHONE NOT ENABLED</span><button class="text-button" id="micSetup" type="button">ENABLE MIC</button></div>
+            </section>
+
+            <section class="panel audio-panel">
+              <div class="section-heading"><div><div class="eyebrow">SOUND</div><h2>Audio settings</h2></div></div>
+              <label class="slider-label" for="volumeSlider"><span>Incoming radio volume</span><b id="volumeValue">80%</b></label>
+              <input id="volumeSlider" type="range" min="0" max="100" value="80">
+              <div class="audio-actions"><button class="secondary-button" id="muteAllButton" type="button">MUTE ALL</button><button class="secondary-button" id="unmuteAllButton" type="button">UNMUTE ALL</button></div>
+            </section>
+
+            <section class="panel roster-panel">
+              <div class="section-heading"><div><div class="eyebrow">NETWORK USERS</div><h2>Dispatchers online</h2></div><span class="online-pill" id="rosterCount">1 ONLINE</span></div>
+              <ul id="rosterList" class="roster-list"><li>You</li></ul>
+            </section>
+          </aside>
+        </div>
+
+        <section class="panel log-panel">
+          <div class="section-heading"><div><div class="eyebrow">SYSTEM MONITOR</div><h2>Dispatch activity</h2></div><button class="text-button" id="clearLog" type="button">CLEAR LOG</button></div>
+          <div class="activity-list" id="activityList" aria-live="polite"><div class="activity-item"><time>--:--:--</time><span>Radio console initialized.</span></div></div>
+        </section>
+        <footer class="footer"><span>METRO DISPATCH RADIO</span><span>Independent ERLC community tool · Not affiliated with Roblox</span><button id="disconnectButton" class="text-button" type="button">DISCONNECT</button></footer>
+      </div>
+    </main>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
